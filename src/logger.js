@@ -14,6 +14,7 @@ const options = {
     handleExceptions: true,
     json: false,
     format: format.combine(format.colorize(), format.simple()),
+    silent: process.argv.indexOf('--silent') >= 0,
   },
 }
 

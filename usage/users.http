@@ -1,0 +1,15 @@
+### Register user:
+POST http://localhost:3000/api/users
+content-type: application/json
+
+{
+  "email": "kondvikk@gmail.com",
+  "password": "password",
+  "name": "Tamas Peter"
+}
+
+### Register attempt with invalid data:
+POST http://localhost:3000/api/users
+content-type: application/json
+
+{}
