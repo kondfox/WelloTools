@@ -9,5 +9,7 @@ export const encoderConfig = {
   saltRounds: 10,
 }
 
-export const encoder = plainText =>
-  bcrypt.hash(plainText, encoderConfig.saltRounds)
+export const encoder = {
+  encode: plainText => bcrypt.hash(plainText, encoderConfig.saltRounds),
+  compare: (plainText, hash) => bcrypt.compare(plainText, hash),
+}

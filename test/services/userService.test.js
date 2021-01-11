@@ -36,7 +36,9 @@ describe('userService', () => {
       )
       const expectedUserToSave = {
         ...testConstants.validUserInput,
-        password: await mockEncoder(testConstants.validUserInput.password),
+        password: await mockEncoder.encode(
+          testConstants.validUserInput.password
+        ),
       }
 
       await register(testConstants.validUserInput)
@@ -45,14 +47,15 @@ describe('userService', () => {
     })
 
     it('should reject with validation errors when invalid user input is given', async () => {
-      mockValidatationService.validate = jest.fn(
-        () => testConstants.validationErrors
-      )
+      mockUserRepository.save = jest.fn()
       const expectedError = {
         status: 400,
         message: 'validation error',
         details: testConstants.validationErrors,
       }
+      mockValidatationService.validate = jest.fn(() =>
+        Promise.reject(expectedError)
+      )
 
       await expect(register({})).rejects.toStrictEqual(expectedError)
     })

@@ -26,25 +26,22 @@ export const save = model => user =>
     })
   })
 
-export const find = model => params =>
+export const findOne = model => params =>
   new Promise((resolve, reject) => {
-    model.create(user, (err, savedUser) => {
+    model.findOne(params, (err, user) => {
       if (err) {
-        logger.error(err)
-        reject(err)
+        reject({ code: err.code })
         return
       }
-      resolve(savedUser._id)
+      resolve(user)
     })
   })
-
-export const remove = model => conditions => model.remove(conditions)
 
 export const userRepository = db => {
   const userSchema = new db.Schema(schema)
   const userModel = db.model('User', userSchema)
   return {
     save: save(userModel),
-    remove: remove(userModel),
+    findOne: findOne(userModel),
   }
 }

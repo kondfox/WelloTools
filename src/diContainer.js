@@ -12,6 +12,7 @@ export const appContext = {
   validatationService: {},
   userService: {},
   userController: {},
+  authController: {},
 }
 
 const injectCustomDependencies = (dependencies = {}) => {
@@ -32,6 +33,8 @@ const injectDefaultDependencies = () => {
     encoder
   )
   const userController = controllers.userController(userService, messageFactory)
+  const authController = controllers.authController(userService, messageFactory)
+
   injectCustomDependencies({
     encoder,
     userRepository,
@@ -39,6 +42,7 @@ const injectDefaultDependencies = () => {
     validationService,
     userService,
     userController,
+    authController,
   })
 }
 

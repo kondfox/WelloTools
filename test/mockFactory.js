@@ -1,5 +1,7 @@
-export const createMockEncoder = () => plainText =>
-  Promise.resolve(`encoded${plainText}`)
+export const createMockEncoder = () => ({
+  encode: jest.fn(plainText => Promise.resolve(`encoded${plainText}`)),
+  compare: jest.fn(),
+})
 
 export const createMockResponseObject = () => {
   const json = jest.fn(() => {})

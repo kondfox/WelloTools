@@ -14,61 +14,80 @@ const minLengthValidator = {
 
 describe('validationService', () => {
   describe('validate', () => {
-    it('should return validation error when 1 fieldValidator fails', () => {
+    it('should return validation error when 1 fieldValidator fails', async () => {
       const obj = { field: '' }
       const validator = { field: [notEmptyValidator] }
-      const expectedResult = { field: [notEmptyErrorMessage] }
+      const expectedResult = {
+        status: 400,
+        message: 'validation error',
+        details: {
+          field: [notEmptyErrorMessage],
+        },
+      }
 
-      const result = validationService.validate(obj, validator)
-
-      expect(result).toStrictEqual(expectedResult)
+      await expect(
+        validationService.validate(obj, validator)
+      ).rejects.toStrictEqual(expectedResult)
     })
 
-    it('should return validation errors when more fieldValidator fails', () => {
+    it('should return validation errors when more fieldValidator fails', async () => {
       const obj = { field: '' }
       const validator = { field: [notEmptyValidator, minLengthValidator] }
       const expectedResult = {
-        field: [notEmptyErrorMessage, minLengthErrorMessage],
+        status: 400,
+        message: 'validation error',
+        details: {
+          field: [notEmptyErrorMessage, minLengthErrorMessage],
+        },
       }
 
-      const result = validationService.validate(obj, validator)
-
-      expect(result).toStrictEqual(expectedResult)
+      await expect(
+        validationService.validate(obj, validator)
+      ).rejects.toStrictEqual(expectedResult)
     })
 
-    it('should return validation errors when multiple fields fail', () => {
+    it('should return validation errors when multiple fields fail', async () => {
       const obj = { field: '', otherField: 'a' }
       const validator = {
         field: [minLengthValidator],
         otherField: [minLengthValidator],
       }
+      const expectedError = {
+        status: 400,
+        message: 'validation error',
+        details: {
+          field: [minLengthErrorMessage],
+          otherField: [minLengthErrorMessage],
+        },
+      }
 
-      const result = validationService.validate(obj, validator)
-
-      expect(result.field).not.toBeUndefined()
-      expect(result.otherField).not.toBeUndefined()
+      await expect(
+        validationService.validate(obj, validator)
+      ).rejects.toStrictEqual(expectedError)
     })
 
-    it('should return empty object when obj contain valid and invalid fields', () => {
+    it('should return only invalid fields when validation errors', async () => {
       const obj = { field: 'a', otherField: '' }
       const validator = {
         field: [notEmptyValidator],
         otherField: [notEmptyValidator],
       }
+      const expectedError = {
+        status: 400,
+        message: 'validation error',
+        details: { otherField: [notEmptyErrorMessage] },
+      }
 
-      const result = validationService.validate(obj, validator)
-
-      expect(result.field).toBeUndefined()
-      expect(result.otherField).not.toBeUndefined()
+      await expect(
+        validationService.validate(obj, validator)
+      ).rejects.toStrictEqual(expectedError)
     })
 
-    it('should return only invalid fields when validation errors', () => {
+    it('should resolve when valid object given', async () => {
       const obj = { field: 'a' }
       const validator = { field: [notEmptyValidator] }
 
-      const result = validationService.validate(obj, validator)
-
-      expect(result).toStrictEqual({})
+      await expect(validationService.validate(obj, validator))
     })
   })
 })

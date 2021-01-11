@@ -8,9 +8,10 @@ If you use multiple environments, create a `.env.<environment name>` file for ea
 
 ### Mandatory environment variables
 
-| name   |    value    |         description |                          example |
-| ------ | :---------: | ------------------: | -------------------------------: |
-| DB_URI | MongoDB URI | set database by URI | 'mongodb://localhost/wellotools' |
+| name         |      value       |                   description |                            example |
+| ------------ | :--------------: | ----------------------------: | ---------------------------------: |
+| DB_URI       |   MongoDB URI    |           set database by URI |   'mongodb://localhost/wellotools' |
+| TOKEN_SECRET | JWT token secret | secret key to sign JWT tokens | 'sNzk2YJxJLvqvcZsCaEqwY8zZvbusd6q' |
 
 ### Optional environment variables
 
