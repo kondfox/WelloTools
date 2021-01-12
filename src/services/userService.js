@@ -63,12 +63,12 @@ export const login = (
   return Promise.resolve({ token })
 }
 
-export const find = (userRepository, filterValidFields) => async params => {
+export const search = (userRepository, filterValidFields) => async params => {
   const query = filterValidFields(params, userFields(userRepository.schema))
   if (query.password) delete query.password // for security reasons
   const options = constructQueryOptions(params)
 
-  const users = await userRepository.find(query, options)
+  const users = await userRepository.search(query, options)
 
   const hiddenFields = ['password']
   const validFields = userFields(userRepository.schema).filter(
@@ -85,8 +85,24 @@ export const find = (userRepository, filterValidFields) => async params => {
   })
 }
 
+export const findById = (userRepository, filterValidFields) => async id => {
+  const user = await userRepository.findOne({ _id: id })
+
+  const hiddenFields = ['password']
+  const validFields = userFields(userRepository.schema).filter(
+    field => !hiddenFields.includes(field)
+  )
+
+  const userDTO = filterValidFields(user['_doc'], validFields)
+
+  return Promise.resolve({
+    user: userDTO,
+  })
+}
+
 export const userService = (userRepository, validatationService, encoder) => ({
   register: register(userRepository, validatationService, encoder.encode),
   login: login(userRepository, validatationService, encoder.compare),
-  find: find(userRepository, validatationService.filterValidFields),
+  search: search(userRepository, validatationService.filterValidFields),
+  findById: findById(userRepository, validatationService.filterValidFields),
 })

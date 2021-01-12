@@ -37,7 +37,7 @@ export const findOne = model => params =>
     })
   })
 
-export const find = model => async (params, options) => {
+export const search = model => async (params, options) => {
   const queryOptions = {
     ...options,
     limit: options.limit || dbProps.find.limit,
@@ -57,6 +57,6 @@ export const userRepository = db => {
     schema,
     save: save(userModel),
     findOne: findOne(userModel),
-    find: find(userModel),
+    search: search(userModel),
   }
 }

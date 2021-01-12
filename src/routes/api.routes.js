@@ -9,7 +9,8 @@ export default appContext => {
   router.use(bodyParser.json())
 
   router.post('/users', appContext.userController.create)
-  router.get('/users', appContext.userController.find)
+  router.get('/users', appContext.userController.search)
+  router.get('/users/:userId', appContext.userController.findById)
 
   return router
 }

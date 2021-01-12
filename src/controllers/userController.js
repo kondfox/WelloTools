@@ -10,9 +10,18 @@ export const userController = (userService, messageFactory) => ({
     }
   },
 
-  find: async (req, res, next) => {
+  search: async (req, res, next) => {
     try {
-      const users = await userService.find(parse(req.query))
+      const users = await userService.search(parse(req.query))
+      res.status(200).json(messageFactory.okMessage({ ...users }))
+    } catch (err) {
+      next(err)
+    }
+  },
+
+  findById: async (req, res, next) => {
+    try {
+      const users = await userService.findById({ _id: req.params.userId })
       res.status(200).json(messageFactory.okMessage({ ...users }))
     } catch (err) {
       next(err)
