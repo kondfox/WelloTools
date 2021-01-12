@@ -9,3 +9,9 @@ export const tokenProps = {
 export const errorCodes = {
   11000: 'email address already registered',
 }
+
+export const dbProps = {
+  find: {
+    limit: 10,
+  },
+}

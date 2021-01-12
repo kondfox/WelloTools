@@ -3,7 +3,7 @@ POST http://localhost:3000/api/users
 content-type: application/json
 
 {
-  "email": "kondvik3@gmail.com",
+  "email": "kondvik5@gmail.com",
   "password": "password",
   "name": "Tamas Peter"
 }
@@ -13,3 +13,9 @@ POST http://localhost:3000/api/users
 content-type: application/json
 
 {}
+
+### Find users by given params:
+GET http://localhost:3000/api/users?name=Tamas%20Peter
+
+### Find users by given params with pagination:
+GET http://localhost:3000/api/users?name=Tamas%20Peter&page=2

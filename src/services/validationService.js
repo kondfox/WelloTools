@@ -21,6 +21,15 @@ export const validate = (obj, objValidator) => {
   return Promise.resolve()
 }
 
+export const filterValidFields = (obj, validFields = []) => {
+  return Object.fromEntries(
+    Object.keys(obj)
+      .filter(field => validFields.includes(field))
+      .map(field => [field, obj[field]])
+  )
+}
+
 export const validationService = {
   validate,
+  filterValidFields,
 }

@@ -1,4 +1,4 @@
-import logger from '../logger'
+import { dbProps } from '../config/constants'
 
 const schema = {
   email: {
@@ -37,11 +37,26 @@ export const findOne = model => params =>
     })
   })
 
+export const find = model => async (params, options) => {
+  const queryOptions = {
+    ...options,
+    limit: options.limit || dbProps.find.limit,
+  }
+  try {
+    const users = await model.find(params, null, queryOptions).exec()
+    return Promise.resolve(users)
+  } catch (err) {
+    return Promise.reject({ code: err.code })
+  }
+}
+
 export const userRepository = db => {
   const userSchema = new db.Schema(schema)
   const userModel = db.model('User', userSchema)
   return {
+    schema,
     save: save(userModel),
     findOne: findOne(userModel),
+    find: find(userModel),
   }
 }

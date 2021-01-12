@@ -1,7 +1,8 @@
 import { sign } from 'jsonwebtoken'
 
 import { fieldValidators } from '../config/validators'
-import { validationProps, tokenProps } from '../config/constants'
+import { validationProps, tokenProps, dbProps } from '../config/constants'
+import { userRepository } from '../repositories/userRepository'
 
 const userValidator = {
   name: [fieldValidators.notEmpty],
@@ -18,6 +19,16 @@ export const encodePassword = async (encode, user) => ({
   ...user,
   password: await encode(user.password),
 })
+
+export const userFields = userSchema => ['_id', ...Object.keys(userSchema)]
+
+export const constructQueryOptions = params => {
+  const options = {}
+  if (params.page != undefined && params.page > 0) {
+    options.skip = (Number(params.page) - 1) * dbProps.find.limit
+  }
+  return options
+}
 
 export const register = (
   userRepository,
@@ -52,7 +63,30 @@ export const login = (
   return Promise.resolve({ token })
 }
 
+export const find = (userRepository, filterValidFields) => async params => {
+  const query = filterValidFields(params, userFields(userRepository.schema))
+  if (query.password) delete query.password // for security reasons
+  const options = constructQueryOptions(params)
+
+  const users = await userRepository.find(query, options)
+
+  const hiddenFields = ['password']
+  const validFields = userFields(userRepository.schema).filter(
+    field => !hiddenFields.includes(field)
+  )
+
+  const userDTOs = users.map(user =>
+    filterValidFields(user['_doc'], validFields)
+  )
+
+  return Promise.resolve({
+    page: params.page || 1,
+    users: userDTOs,
+  })
+}
+
 export const userService = (userRepository, validatationService, encoder) => ({
   register: register(userRepository, validatationService, encoder.encode),
   login: login(userRepository, validatationService, encoder.compare),
+  find: find(userRepository, validatationService.filterValidFields),
 })
