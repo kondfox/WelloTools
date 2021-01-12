@@ -21,6 +21,8 @@ export const encodePassword = async (encode, user) => ({
 
 export const userFields = userSchema => ['_id', ...Object.keys(userSchema)]
 
+export const avatarPath = req => `${req.headers.host}/profilepics/`
+
 export const constructQueryOptions = params => {
   const options = {}
   if (params.page != undefined && params.page > 0) {
@@ -88,6 +90,8 @@ export const findById = (userRepository, filterValidFields) => async (
   const allowedFields = fieldsToShow(userRepository.schema, loggedInUser)
 
   const userDTO = filterValidFields(user['_doc'], allowedFields)
+  if (userDTO.avatar != undefined)
+    userDTO.avatar = avatarPath(req) + userDTO.avatar
 
   return Promise.resolve({
     user: userDTO,
@@ -112,7 +116,7 @@ export const update = (userRepository, filterValidFields, encode) => async (
   if (validFields.password != undefined) {
     validFields.password = await encode(validFields.password)
   }
-
+  console.log('validFields:', validFields)
   return userRepository.update(reqId, validFields)
 }
 

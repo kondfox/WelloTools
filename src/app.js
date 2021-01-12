@@ -4,7 +4,7 @@ import morgan from 'morgan'
 
 import logger from './logger'
 import * as diContainer from './diContainer'
-import { api, auth } from './routes'
+import { api, auth, image } from './routes'
 import errorHandler from './middlewares/errorHandler'
 import { onStartup } from './startUp'
 
@@ -24,9 +24,11 @@ app.use(
     skip: process.argv.indexOf('--silent') >= 0,
   })
 )
+app.use(express.static('public'))
 
 app.use('/auth', auth(diContainer.appContext))
 app.use('/api', api(diContainer.appContext))
+app.use('/images', image(diContainer.appContext))
 
 app.use(errorHandler)
 

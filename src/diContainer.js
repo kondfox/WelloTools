@@ -15,6 +15,7 @@ export const appContext = {
   authService: {},
   userController: {},
   authController: {},
+  imageController: {},
   authMiddleware: {},
 }
 
@@ -42,6 +43,10 @@ const injectDefaultDependencies = () => {
   )
   const userController = controllers.userController(userService, messageFactory)
   const authController = controllers.authController(authService, messageFactory)
+  const imageController = controllers.imageController(
+    userService,
+    messageFactory
+  )
   const authMiddleware = middlewares.authMiddleware(authService)
 
   injectCustomDependencies({
@@ -53,6 +58,7 @@ const injectDefaultDependencies = () => {
     authService,
     userController,
     authController,
+    imageController,
     authMiddleware,
   })
 }

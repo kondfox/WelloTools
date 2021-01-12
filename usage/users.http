@@ -16,7 +16,7 @@ content-type: application/json
 
 ### List users:
 GET http://localhost:3000/api/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmRkZDkxMzk4OWI1Y2ZiMjg2OTE2NCIsImlhdCI6MTYxMDQ3NDUzNCwiZXhwIjoxNjEwNDc4MTM0fQ.MXPrR_lsmDfb0qyfAcmsqazVHlpcgkTrbS1Hn76KPKA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmUwYzBmNGNjMzk0ZDllMTJmMzM2NSIsImlhdCI6MTYxMDUzMTQwNSwiZXhwIjoxNjEwNTM1MDA1fQ.3UxKREC0ctQh5UCucy_Yx9Zur7hM8qEa_dNypsQjzfk
 
 ### Find users by given params:
 GET http://localhost:3000/api/users?name=John%20Doe
@@ -27,7 +27,7 @@ GET http://localhost:3000/api/users?name=Tamas%20Peter&page=2
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZmZjN2U5NzE2MGIzMDljNGJmNjg4ZDkiLCJpYXQiOjE2MTA0Njk1MjIsImV4cCI6MTYxMDQ3MzEyMn0.tdFe-ZE2-su4m5ecm4D3QZOj1DtqGGwcmkEqHxvqCOY
 
 ### Get user by id:
-GET http://localhost:3000/api/users/5ffddd913989b5cfb2869164
+GET http://localhost:3000/api/users/5ffe0c0f4cc394d9e12f3365
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmRkZDkxMzk4OWI1Y2ZiMjg2OTE2NCIsImlhdCI6MTYxMDQ3NDE2OSwiZXhwIjoxNjEwNDc3NzY5fQ.aJAQ1fL9TsSbTLZLWKBSbAEsiuUw4mN6vyIOL0OWbmQ
 
 ### Update own account:

@@ -16,7 +16,7 @@ const schema = {
   role: {
     type: String,
   },
-  profilePicUrl: {
+  avatar: {
     type: String,
   },
 }
