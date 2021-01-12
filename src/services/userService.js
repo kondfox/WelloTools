@@ -100,9 +100,29 @@ export const findById = (userRepository, filterValidFields) => async id => {
   })
 }
 
+export const update = (userRepository, filterValidFields, encode) => async (
+  id,
+  params
+) => {
+  const validFields = filterValidFields(
+    params,
+    Object.keys(userRepository.schema)
+  )
+  if (validFields.password != undefined) {
+    validFields.password = await encode(validFields.password)
+  }
+
+  return userRepository.update(id, validFields)
+}
+
 export const userService = (userRepository, validatationService, encoder) => ({
   register: register(userRepository, validatationService, encoder.encode),
   login: login(userRepository, validatationService, encoder.compare),
   search: search(userRepository, validatationService.filterValidFields),
   findById: findById(userRepository, validatationService.filterValidFields),
+  update: update(
+    userRepository,
+    validatationService.filterValidFields,
+    encoder.encode
+  ),
 })

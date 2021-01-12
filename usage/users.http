@@ -22,3 +22,19 @@ GET http://localhost:3000/api/users?name=Tamas%20Peter&page=2
 
 ### Get user by id:
 GET http://localhost:3000/api/users/5ffc7e97160b309c4bf688d9
+
+### Update user by id:
+PUT http://localhost:3000/api/users/5ffc7e97160b309c4bf688d9
+content-type: application/json
+
+{
+  "name": "Jane Doe"
+}
+
+### Update user password by id:
+PUT http://localhost:3000/api/users/5ffc7e97160b309c4bf688d9
+content-type: application/json
+
+{
+  "password": "newpassword"
+}

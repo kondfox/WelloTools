@@ -50,6 +50,15 @@ export const search = model => async (params, options) => {
   }
 }
 
+export const update = model => async (id, update) => {
+  try {
+    await model.findByIdAndUpdate(id, update).exec()
+    return Promise.resolve()
+  } catch (err) {
+    return Promise.reject({ code: err.code })
+  }
+}
+
 export const userRepository = db => {
   const userSchema = new db.Schema(schema)
   const userModel = db.model('User', userSchema)
@@ -58,5 +67,6 @@ export const userRepository = db => {
     save: save(userModel),
     findOne: findOne(userModel),
     search: search(userModel),
+    update: update(userModel),
   }
 }
