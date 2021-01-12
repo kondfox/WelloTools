@@ -14,6 +14,9 @@ content-type: application/json
 
 {}
 
+### List users:
+GET http://localhost:3000/api/users
+
 ### Find users by given params:
 GET http://localhost:3000/api/users?name=Tamas%20Peter
 
@@ -38,3 +41,6 @@ content-type: application/json
 {
   "password": "newpassword"
 }
+
+### Delete user by id:
+DELETE http://localhost:3000/api/users/5ffc9d5d4d5b37a04530ba9c

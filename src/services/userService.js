@@ -115,6 +115,10 @@ export const update = (userRepository, filterValidFields, encode) => async (
   return userRepository.update(id, validFields)
 }
 
+export const remove = userRepository => async id => {
+  return userRepository.remove(id)
+}
+
 export const userService = (userRepository, validatationService, encoder) => ({
   register: register(userRepository, validatationService, encoder.encode),
   login: login(userRepository, validatationService, encoder.compare),
@@ -125,4 +129,5 @@ export const userService = (userRepository, validatationService, encoder) => ({
     validatationService.filterValidFields,
     encoder.encode
   ),
+  remove: remove(userRepository),
 })

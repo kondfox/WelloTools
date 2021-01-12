@@ -59,6 +59,15 @@ export const update = model => async (id, update) => {
   }
 }
 
+export const remove = model => async id => {
+  try {
+    await model.findByIdAndRemove(id).exec()
+    return Promise.resolve()
+  } catch (err) {
+    return Promise.reject({ code: err.code })
+  }
+}
+
 export const userRepository = db => {
   const userSchema = new db.Schema(schema)
   const userModel = db.model('User', userSchema)
@@ -68,5 +77,6 @@ export const userRepository = db => {
     findOne: findOne(userModel),
     search: search(userModel),
     update: update(userModel),
+    remove: remove(userModel),
   }
 }

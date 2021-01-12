@@ -12,6 +12,7 @@ export default appContext => {
   router.get('/users', appContext.userController.search)
   router.get('/users/:userId', appContext.userController.findById)
   router.put('/users/:userId', appContext.userController.update)
+  router.delete('/users/:userId', appContext.userController.remove)
 
   return router
 }

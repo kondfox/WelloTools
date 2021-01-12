@@ -36,4 +36,13 @@ export const userController = (userService, messageFactory) => ({
       next(err)
     }
   },
+
+  remove: async (req, res, next) => {
+    try {
+      await userService.remove(req.params.userId)
+      res.status(200).json(messageFactory.okMessage())
+    } catch (err) {
+      next(err)
+    }
+  },
 })
