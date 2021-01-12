@@ -6,6 +6,7 @@ import logger from './logger'
 import * as diContainer from './diContainer'
 import { api, auth } from './routes'
 import errorHandler from './middlewares/errorHandler'
+import { onStartup } from './startUp'
 
 const dotenvFile = `.env.${process.env.NODE_ENV || 'dev'}`
 dotenv.config({ path: dotenvFile })
@@ -13,6 +14,9 @@ dotenv.config({ path: dotenvFile })
 const app = express()
 
 diContainer.inject()
+
+// seeds DB for demonstration puroses
+onStartup(diContainer.appContext)
 
 app.use(
   morgan('combined', {

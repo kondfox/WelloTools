@@ -12,7 +12,7 @@ export const userController = (userService, messageFactory) => ({
 
   search: async (req, res, next) => {
     try {
-      const users = await userService.search(parse(req.query))
+      const users = await userService.search(req.loggedInUser, parse(req.query))
       res.status(200).json(messageFactory.okMessage({ ...users }))
     } catch (err) {
       next(err)
@@ -21,7 +21,9 @@ export const userController = (userService, messageFactory) => ({
 
   findById: async (req, res, next) => {
     try {
-      const users = await userService.findById({ _id: req.params.userId })
+      const users = await userService.findById(req.loggedInUser, {
+        _id: req.params.userId,
+      })
       res.status(200).json(messageFactory.okMessage({ ...users }))
     } catch (err) {
       next(err)
@@ -30,7 +32,7 @@ export const userController = (userService, messageFactory) => ({
 
   update: async (req, res, next) => {
     try {
-      await userService.update(req.params.userId, req.body)
+      await userService.update(req.loggedInUser, req.params.userId, req.body)
       res.status(200).json(messageFactory.okMessage())
     } catch (err) {
       next(err)
@@ -39,7 +41,7 @@ export const userController = (userService, messageFactory) => ({
 
   remove: async (req, res, next) => {
     try {
-      await userService.remove(req.params.userId)
+      await userService.remove(req.loggedInUser, req.params.userId)
       res.status(200).json(messageFactory.okMessage())
     } catch (err) {
       next(err)

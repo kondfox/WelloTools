@@ -3,7 +3,7 @@ POST http://localhost:3000/api/users
 content-type: application/json
 
 {
-  "email": "kondvik5@gmail.com",
+  "email": "kondvik7@gmail.com",
   "password": "password",
   "name": "Tamas Peter"
 }
@@ -16,31 +16,56 @@ content-type: application/json
 
 ### List users:
 GET http://localhost:3000/api/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmRkZDkxMzk4OWI1Y2ZiMjg2OTE2NCIsImlhdCI6MTYxMDQ3NDUzNCwiZXhwIjoxNjEwNDc4MTM0fQ.MXPrR_lsmDfb0qyfAcmsqazVHlpcgkTrbS1Hn76KPKA
 
 ### Find users by given params:
-GET http://localhost:3000/api/users?name=Tamas%20Peter
+GET http://localhost:3000/api/users?name=John%20Doe
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZmZjN2U5NzE2MGIzMDljNGJmNjg4ZDkiLCJpYXQiOjE2MTA0Njk1MjIsImV4cCI6MTYxMDQ3MzEyMn0.tdFe-ZE2-su4m5ecm4D3QZOj1DtqGGwcmkEqHxvqCOY
 
 ### Find users by given params with pagination:
 GET http://localhost:3000/api/users?name=Tamas%20Peter&page=2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZmZjN2U5NzE2MGIzMDljNGJmNjg4ZDkiLCJpYXQiOjE2MTA0Njk1MjIsImV4cCI6MTYxMDQ3MzEyMn0.tdFe-ZE2-su4m5ecm4D3QZOj1DtqGGwcmkEqHxvqCOY
 
 ### Get user by id:
-GET http://localhost:3000/api/users/5ffc7e97160b309c4bf688d9
+GET http://localhost:3000/api/users/5ffddd913989b5cfb2869164
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmRkZDkxMzk4OWI1Y2ZiMjg2OTE2NCIsImlhdCI6MTYxMDQ3NDE2OSwiZXhwIjoxNjEwNDc3NzY5fQ.aJAQ1fL9TsSbTLZLWKBSbAEsiuUw4mN6vyIOL0OWbmQ
 
-### Update user by id:
-PUT http://localhost:3000/api/users/5ffc7e97160b309c4bf688d9
+### Update own account:
+PUT http://localhost:3000/api/users/5ffddd913989b5cfb2869164
 content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmRkZDkxMzk4OWI1Y2ZiMjg2OTE2NCIsImlhdCI6MTYxMDQ3NDE2OSwiZXhwIjoxNjEwNDc3NzY5fQ.aJAQ1fL9TsSbTLZLWKBSbAEsiuUw4mN6vyIOL0OWbmQ
 
 {
-  "name": "Jane Doe"
+  "name": "Johnny"
+}
+
+### Trying to update other user without permission:
+PUT http://localhost:3000/api/users/5ffddd913989b5cfb2869165
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmRkZDkxMzk4OWI1Y2ZiMjg2OTE2NCIsImlhdCI6MTYxMDQ3NDE2OSwiZXhwIjoxNjEwNDc3NzY5fQ.aJAQ1fL9TsSbTLZLWKBSbAEsiuUw4mN6vyIOL0OWbmQ
+
+{
+  "name": "Johnny"
+}
+
+### Update other account with admin:
+PUT http://localhost:3000/api/users/5ffddd913989b5cfb2869164
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmRkZDkxMzk4OWI1Y2ZiMjg2OTE2MyIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTYxMDQ3NDczNCwiZXhwIjoxNjEwNDc4MzM0fQ.OGu1khU57JfGeWnDLwXkIS3mJ3bNv5HCNF8Aj3pvcnw
+
+{
+  "name": "Johnny"
 }
 
 ### Update user password by id:
-PUT http://localhost:3000/api/users/5ffc7e97160b309c4bf688d9
+PUT http://localhost:3000/api/users/5ffc9d5d4d5b37a04530ba9c
 content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZmZjN2U5NzE2MGIzMDljNGJmNjg4ZDkiLCJpYXQiOjE2MTA0Njk1MjIsImV4cCI6MTYxMDQ3MzEyMn0.tdFe-ZE2-su4m5ecm4D3QZOj1DtqGGwcmkEqHxvqCOY
 
 {
-  "password": "newpassword"
+  "password": "password"
 }
 
 ### Delete user by id:
 DELETE http://localhost:3000/api/users/5ffc9d5d4d5b37a04530ba9c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZmZjN2U5NzE2MGIzMDljNGJmNjg4ZDkiLCJpYXQiOjE2MTA0Njk1MjIsImV4cCI6MTYxMDQ3MzEyMn0.tdFe-ZE2-su4m5ecm4D3QZOj1DtqGGwcmkEqHxvqCOY

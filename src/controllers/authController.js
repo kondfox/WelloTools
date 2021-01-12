@@ -1,7 +1,7 @@
-export const authController = (userService, messageFactory) => ({
+export const authController = (authService, messageFactory) => ({
   login: async (req, res, next) => {
     try {
-      const token = await userService.login(req.body)
+      const token = await authService.login(req.body)
       res.status(200).json(messageFactory.okMessage(token))
     } catch (err) {
       next(err)

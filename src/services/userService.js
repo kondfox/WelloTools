@@ -1,8 +1,5 @@
-import { sign } from 'jsonwebtoken'
-
 import { fieldValidators } from '../config/validators'
-import { validationProps, tokenProps, dbProps } from '../config/constants'
-import { userRepository } from '../repositories/userRepository'
+import { validationProps, dbProps, roles } from '../config/constants'
 
 const userValidator = {
   name: [fieldValidators.notEmpty],
@@ -10,9 +7,11 @@ const userValidator = {
   email: [fieldValidators.validEmail],
 }
 
-const credentialValidator = {
-  password: [fieldValidators.minLength(validationProps.MIN_PASSWORD_LENGTH)],
-  email: [fieldValidators.validEmail],
+export const hasPermission = (loggedInUser, reqId) => {
+  return !(
+    !loggedInUser ||
+    (loggedInUser.id !== reqId && loggedInUser.role !== roles.ADMIN)
+  )
 }
 
 export const encodePassword = async (encode, user) => ({
@@ -30,6 +29,22 @@ export const constructQueryOptions = params => {
   return options
 }
 
+export const defineHiddenFields = loggedInUser => {
+  if (loggedInUser != undefined) {
+    return ['password']
+  } else {
+    return ['_id', 'email', 'password', 'role']
+  }
+}
+
+export const fieldsToShow = (schema, loggedInUser) => {
+  const hiddenFields = defineHiddenFields(loggedInUser)
+  const allowedFields = userFields(schema).filter(
+    field => !hiddenFields.includes(field)
+  )
+  return allowedFields
+}
+
 export const register = (
   userRepository,
   validatationService,
@@ -42,41 +57,20 @@ export const register = (
   return userRepository.save(user)
 }
 
-export const login = (
-  userRepository,
-  validatationService,
-  compare
-) => async credentials => {
-  await validatationService.validate(credentials, credentialValidator)
-  const user = await userRepository.findOne({ email: credentials.email })
-
-  const isValidPassword = await compare(credentials.password, user.password)
-
-  if (!isValidPassword) {
-    return Promise.reject({
-      status: 400,
-      message: 'wrong username or password',
-    })
-  }
-
-  const token = sign({ userId: user.id }, process.env.TOKEN_SECRET, tokenProps)
-  return Promise.resolve({ token })
-}
-
-export const search = (userRepository, filterValidFields) => async params => {
+export const search = (userRepository, filterValidFields) => async (
+  loggedInUser,
+  params
+) => {
   const query = filterValidFields(params, userFields(userRepository.schema))
   if (query.password) delete query.password // for security reasons
   const options = constructQueryOptions(params)
 
   const users = await userRepository.search(query, options)
 
-  const hiddenFields = ['password']
-  const validFields = userFields(userRepository.schema).filter(
-    field => !hiddenFields.includes(field)
-  )
+  const allowedFields = fieldsToShow(userRepository.schema, loggedInUser)
 
   const userDTOs = users.map(user =>
-    filterValidFields(user['_doc'], validFields)
+    filterValidFields(user['_doc'], allowedFields)
   )
 
   return Promise.resolve({
@@ -85,15 +79,15 @@ export const search = (userRepository, filterValidFields) => async params => {
   })
 }
 
-export const findById = (userRepository, filterValidFields) => async id => {
-  const user = await userRepository.findOne({ _id: id })
+export const findById = (userRepository, filterValidFields) => async (
+  loggedInUser,
+  reqId
+) => {
+  const user = await userRepository.findOne({ _id: reqId })
 
-  const hiddenFields = ['password']
-  const validFields = userFields(userRepository.schema).filter(
-    field => !hiddenFields.includes(field)
-  )
+  const allowedFields = fieldsToShow(userRepository.schema, loggedInUser)
 
-  const userDTO = filterValidFields(user['_doc'], validFields)
+  const userDTO = filterValidFields(user['_doc'], allowedFields)
 
   return Promise.resolve({
     user: userDTO,
@@ -101,9 +95,16 @@ export const findById = (userRepository, filterValidFields) => async id => {
 }
 
 export const update = (userRepository, filterValidFields, encode) => async (
-  id,
+  loggedInUser,
+  reqId,
   params
 ) => {
+  if (!hasPermission(loggedInUser, reqId)) {
+    return Promise.reject({
+      status: 403,
+      message: "you don't have permission, it's not your account",
+    })
+  }
   const validFields = filterValidFields(
     params,
     Object.keys(userRepository.schema)
@@ -112,16 +113,21 @@ export const update = (userRepository, filterValidFields, encode) => async (
     validFields.password = await encode(validFields.password)
   }
 
-  return userRepository.update(id, validFields)
+  return userRepository.update(reqId, validFields)
 }
 
-export const remove = userRepository => async id => {
-  return userRepository.remove(id)
+export const remove = userRepository => async (loggedInUser, reqId) => {
+  if (!hasPermission(loggedInUser, reqId)) {
+    return Promise.reject({
+      status: 403,
+      message: "you don't have permission, it's not your account",
+    })
+  }
+  return userRepository.remove(reqId)
 }
 
 export const userService = (userRepository, validatationService, encoder) => ({
   register: register(userRepository, validatationService, encoder.encode),
-  login: login(userRepository, validatationService, encoder.compare),
   search: search(userRepository, validatationService.filterValidFields),
   findById: findById(userRepository, validatationService.filterValidFields),
   update: update(

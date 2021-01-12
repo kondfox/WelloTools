@@ -13,6 +13,12 @@ const schema = {
   name: {
     type: String,
   },
+  role: {
+    type: String,
+  },
+  profilePicUrl: {
+    type: String,
+  },
 }
 
 export const save = model => user =>

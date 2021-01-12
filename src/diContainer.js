@@ -4,6 +4,7 @@ import * as controllers from './controllers'
 import * as services from './services'
 import * as factories from './factories'
 import * as repositories from './repositories'
+import * as middlewares from './middlewares'
 
 export const appContext = {
   encoder: {},
@@ -11,8 +12,10 @@ export const appContext = {
   messageFactory: {},
   validatationService: {},
   userService: {},
+  authService: {},
   userController: {},
   authController: {},
+  authMiddleware: {},
 }
 
 const injectCustomDependencies = (dependencies = {}) => {
@@ -27,13 +30,19 @@ const injectDefaultDependencies = () => {
   const userRepository = repositories.userRepository(dbConnection)
   const messageFactory = factories.messageFactory
   const validationService = services.validationService
+  const authService = services.authService(
+    userRepository,
+    validationService,
+    encoder
+  )
   const userService = services.userService(
     userRepository,
     validationService,
     encoder
   )
   const userController = controllers.userController(userService, messageFactory)
-  const authController = controllers.authController(userService, messageFactory)
+  const authController = controllers.authController(authService, messageFactory)
+  const authMiddleware = middlewares.authMiddleware(authService)
 
   injectCustomDependencies({
     encoder,
@@ -41,8 +50,10 @@ const injectDefaultDependencies = () => {
     messageFactory,
     validationService,
     userService,
+    authService,
     userController,
     authController,
+    authMiddleware,
   })
 }
 

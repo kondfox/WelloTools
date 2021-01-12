@@ -9,6 +9,9 @@ export default appContext => {
   router.use(bodyParser.json())
 
   router.post('/users', appContext.userController.create)
+
+  router.use(appContext.authMiddleware.authenticate)
+
   router.get('/users', appContext.userController.search)
   router.get('/users/:userId', appContext.userController.findById)
   router.put('/users/:userId', appContext.userController.update)
