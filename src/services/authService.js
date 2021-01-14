@@ -51,7 +51,7 @@ export const login = (
   if (!isValidPassword) {
     return Promise.reject({
       status: 400,
-      message: 'wrong username or password',
+      message: 'wrong email or password',
     })
   }
 

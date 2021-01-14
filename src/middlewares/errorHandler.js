@@ -9,7 +9,10 @@ export default (err, req, res, next) => {
   const errorMessageDetails = {
     message: message || 'unkown error',
   }
-  if (err.code) errorMessageDetails['message'] = errorCodes[err.code]
+  if (err.code) {
+    errorMessageDetails['message'] = errorCodes[err.code].message
+    err.status = errorCodes[err.code].status
+  }
   if (details != undefined) errorMessageDetails['details'] = details
 
   res.status(err.status || 500)

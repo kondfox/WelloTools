@@ -90,8 +90,6 @@ export const findById = (userRepository, filterValidFields) => async (
   const allowedFields = fieldsToShow(userRepository.schema, loggedInUser)
 
   const userDTO = filterValidFields(user['_doc'], allowedFields)
-  if (userDTO.avatar != undefined)
-    userDTO.avatar = avatarPath(req) + userDTO.avatar
 
   return Promise.resolve({
     user: userDTO,
@@ -99,16 +97,10 @@ export const findById = (userRepository, filterValidFields) => async (
 }
 
 export const update = (userRepository, filterValidFields, encode) => async (
-  loggedInUser,
-  reqId,
-  params
+  userId,
+  params,
+  isAdmin
 ) => {
-  if (!hasPermission(loggedInUser, reqId)) {
-    return Promise.reject({
-      status: 403,
-      message: "you don't have permission, it's not your account",
-    })
-  }
   const validFields = filterValidFields(
     params,
     Object.keys(userRepository.schema)
@@ -116,18 +108,14 @@ export const update = (userRepository, filterValidFields, encode) => async (
   if (validFields.password != undefined) {
     validFields.password = await encode(validFields.password)
   }
-  console.log('validFields:', validFields)
-  return userRepository.update(reqId, validFields)
+  if (validFields.role != undefined && !isAdmin) {
+    delete validFields.role
+  }
+  return userRepository.update(userId, validFields)
 }
 
-export const remove = userRepository => async (loggedInUser, reqId) => {
-  if (!hasPermission(loggedInUser, reqId)) {
-    return Promise.reject({
-      status: 403,
-      message: "you don't have permission, it's not your account",
-    })
-  }
-  return userRepository.remove(reqId)
+export const remove = userRepository => async userId => {
+  return userRepository.remove(userId)
 }
 
 export const userService = (userRepository, validatationService, encoder) => ({

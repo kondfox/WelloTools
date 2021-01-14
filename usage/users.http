@@ -16,10 +16,10 @@ content-type: application/json
 
 ### List users:
 GET http://localhost:3000/api/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmUwYzBmNGNjMzk0ZDllMTJmMzM2NSIsImlhdCI6MTYxMDUzMTQwNSwiZXhwIjoxNjEwNTM1MDA1fQ.3UxKREC0ctQh5UCucy_Yx9Zur7hM8qEa_dNypsQjzfk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmUwYzBmNGNjMzk0ZDllMTJmMzM2NSIsImlhdCI6MTYxMDYyMTE3NSwiZXhwIjoxNjEwNjI0Nzc1fQ.2LoMwcotzhiPp2WdijAIlj59UjUueAsRhb_5Hf1os70
 
 ### Find users by given params:
-GET http://localhost:3000/api/users?name=John%20Doe
+GET http://localhost:3000/api/users?name=Jane%20Doe
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZmZjN2U5NzE2MGIzMDljNGJmNjg4ZDkiLCJpYXQiOjE2MTA0Njk1MjIsImV4cCI6MTYxMDQ3MzEyMn0.tdFe-ZE2-su4m5ecm4D3QZOj1DtqGGwcmkEqHxvqCOY
 
 ### Find users by given params with pagination:
@@ -30,10 +30,45 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZmZjN
 GET http://localhost:3000/api/users/5ffe0c0f4cc394d9e12f3365
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmRkZDkxMzk4OWI1Y2ZiMjg2OTE2NCIsImlhdCI6MTYxMDQ3NDE2OSwiZXhwIjoxNjEwNDc3NzY5fQ.aJAQ1fL9TsSbTLZLWKBSbAEsiuUw4mN6vyIOL0OWbmQ
 
+### Get user by non existing id:
+GET http://localhost:3000/api/users/4ffe0c0f4cc394d9e12f3365
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmUwYzBmNGNjMzk0ZDllMTJmMzM2NSIsImlhdCI6MTYxMDYyMTE3NSwiZXhwIjoxNjEwNjI0Nzc1fQ.2LoMwcotzhiPp2WdijAIlj59UjUueAsRhb_5Hf1os70
+
+### Get user by wrong formatted userId:
+GET http://localhost:3000/api/users/asdf
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmRkZDkxMzk4OWI1Y2ZiMjg2OTE2NCIsImlhdCI6MTYxMDQ3NDE2OSwiZXhwIjoxNjEwNDc3NzY5fQ.aJAQ1fL9TsSbTLZLWKBSbAEsiuUw4mN6vyIOL0OWbmQ
+
 ### Update own account:
+PUT http://localhost:3000/api/users
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmUwYzBmNGNjMzk0ZDllMTJmMzM2NSIsImlhdCI6MTYxMDYzMDAzNiwiZXhwIjoxNjEwNjMzNjM2fQ.bZFtBZEAD7Pp3Pausf_ekzVIObLpjHzICXlGzoc1sRw
+
+{
+  "name": "Johnny"
+}
+
+### Update account with admin:
 PUT http://localhost:3000/api/users/5ffddd913989b5cfb2869164
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmRkZDkxMzk4OWI1Y2ZiMjg2OTE2NCIsImlhdCI6MTYxMDQ3NDE2OSwiZXhwIjoxNjEwNDc3NzY5fQ.aJAQ1fL9TsSbTLZLWKBSbAEsiuUw4mN6vyIOL0OWbmQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmUwYzBmNGNjMzk0ZDllMTJmMzM2NCIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTYxMDYyOTY2MiwiZXhwIjoxNjEwNjMzMjYyfQ.8swhwjf4l_w3-kQCBTB15qcRAyOYOg2DrH_51W-UWLw
+
+{
+  "name": "Johnny"
+}
+
+### Update account with non existing id:
+PUT http://localhost:3000/api/users/4ffddd913989b5cfb2869164
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmUwYzBmNGNjMzk0ZDllMTJmMzM2NCIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTYxMDYyOTY2MiwiZXhwIjoxNjEwNjMzMjYyfQ.8swhwjf4l_w3-kQCBTB15qcRAyOYOg2DrH_51W-UWLw
+
+{
+  "name": "Johnny"
+}
+
+### Update account with wrong formatted id:
+PUT http://localhost:3000/api/users/invalidId
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmUwYzBmNGNjMzk0ZDllMTJmMzM2NCIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTYxMDYyOTY2MiwiZXhwIjoxNjEwNjMzMjYyfQ.8swhwjf4l_w3-kQCBTB15qcRAyOYOg2DrH_51W-UWLw
 
 {
   "name": "Johnny"

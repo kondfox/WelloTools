@@ -12,7 +12,7 @@ export const validate = (obj, objValidator) => {
 
   if (Object.keys(validationErrors).length) {
     return Promise.reject({
-      status: 400,
+      status: 406,
       message: 'validation error',
       details: validationErrors,
     })

@@ -3,6 +3,8 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 
 export default appContext => {
+  const { authenticate, authOnly, adminOnly } = appContext.authMiddleware
+
   const router = express.Router()
 
   router.use(cors())
@@ -10,12 +12,17 @@ export default appContext => {
 
   router.post('/users', appContext.userController.create)
 
-  router.use(appContext.authMiddleware.authenticate)
-
+  router.use(authenticate)
   router.get('/users', appContext.userController.search)
   router.get('/users/:userId', appContext.userController.findById)
-  router.put('/users/:userId', appContext.userController.update)
-  router.delete('/users/:userId', appContext.userController.remove)
+
+  router.use(authOnly)
+  router.put('/users', appContext.userController.updateSelf)
+  router.delete('/users', appContext.userController.removeSelf)
+
+  router.use(adminOnly)
+  router.put('/users/:userId', appContext.userController.updateAdmin)
+  router.delete('/users/:userId', appContext.userController.removeAdmin)
 
   return router
 }

@@ -8,8 +8,16 @@ export const tokenProps = {
 
 export const tokenPrefix = 'Bearer '
 
+export const errorMessages = {
+  NO_AUTH: 'no valid token found',
+  NO_PERMISSION: "you don't have permission",
+}
+
 export const errorCodes = {
-  11000: 'email address already registered',
+  11000: {
+    status: 409,
+    message: 'email address already registered',
+  },
 }
 
 export const dbProps = {

@@ -30,18 +30,36 @@ export const userController = (userService, messageFactory) => ({
     }
   },
 
-  update: async (req, res, next) => {
+  updateSelf: async (req, res, next) => {
     try {
-      await userService.update(req.loggedInUser, req.params.userId, req.body)
+      await userService.update(req.loggedInUser.id, req.body, false)
       res.status(200).json(messageFactory.okMessage())
     } catch (err) {
       next(err)
     }
   },
 
-  remove: async (req, res, next) => {
+  updateAdmin: async (req, res, next) => {
     try {
-      await userService.remove(req.loggedInUser, req.params.userId)
+      await userService.update(req.params.userId, req.body, true)
+      res.status(200).json(messageFactory.okMessage())
+    } catch (err) {
+      next(err)
+    }
+  },
+
+  removeSelf: async (req, res, next) => {
+    try {
+      await userService.remove(req.loggedInUser.id)
+      res.status(200).json(messageFactory.okMessage())
+    } catch (err) {
+      next(err)
+    }
+  },
+
+  removeAdmin: async (req, res, next) => {
+    try {
+      await userService.remove(req.params.userId)
       res.status(200).json(messageFactory.okMessage())
     } catch (err) {
       next(err)

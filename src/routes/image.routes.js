@@ -30,7 +30,7 @@ export default appContext => {
   router.use(appContext.authMiddleware.authenticate)
 
   router.post(
-    '',
+    '/avatar',
     imageUpload.single('avatar'),
     appContext.imageController.upload
   )

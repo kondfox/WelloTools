@@ -16,5 +16,5 @@ export const encoder = {
 
 export const imageConfig = {
   publicFolder: 'public',
-  uploadSrc: 'profilepics',
+  uploadSrc: 'avatars',
 }

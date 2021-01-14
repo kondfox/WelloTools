@@ -21,27 +21,50 @@ const schema = {
   },
 }
 
-export const save = model => user =>
-  new Promise((resolve, reject) => {
-    model.create(user, (err, savedUser) => {
-      if (err) {
-        reject({ code: err.code })
-        return
-      }
-      resolve(savedUser._id)
-    })
-  })
+const errorWithoutCode = err => {
+  if (err.message.indexOf('Cast to ') > -1) {
+    let field = err.message.split(' ')[2]
+    if (field === 'ObjectId') field = 'userId'
+    return {
+      status: 400,
+      message: `invalid ${field} is given`,
+    }
+  }
+  return err
+}
 
-export const findOne = model => params =>
-  new Promise((resolve, reject) => {
-    model.findOne(params, (err, user) => {
-      if (err) {
-        reject({ code: err.code })
-        return
-      }
-      resolve(user)
-    })
-  })
+export const noSuchUserError = {
+  status: 404,
+  message: 'no such user found',
+}
+
+export const handleError = err => {
+  const codelessError = errorWithoutCode(err)
+  if (codelessError.status != undefined) {
+    return Promise.reject(codelessError)
+  } else {
+    return Promise.reject({ code: err.code })
+  }
+}
+
+export const save = model => async user => {
+  try {
+    const savedUser = await model.create(user)
+    return Promise.resolve(savedUser._id)
+  } catch (err) {
+    return handleError(err)
+  }
+}
+
+export const findOne = model => async params => {
+  try {
+    const user = await model.findOne(params)
+    if (!user) return Promise.reject(noSuchUserError)
+    return Promise.resolve(user)
+  } catch (err) {
+    return handleError(err)
+  }
+}
 
 export const search = model => async (params, options) => {
   const queryOptions = {
@@ -49,28 +72,30 @@ export const search = model => async (params, options) => {
     limit: options.limit || dbProps.find.limit,
   }
   try {
-    const users = await model.find(params, null, queryOptions).exec()
+    const users = await model.find(params, null, queryOptions)
     return Promise.resolve(users)
   } catch (err) {
-    return Promise.reject({ code: err.code })
+    return handleError(err)
   }
 }
 
 export const update = model => async (id, update) => {
   try {
-    await model.findByIdAndUpdate(id, update).exec()
+    const user = await model.findByIdAndUpdate(id, update)
+    if (!user) return Promise.reject(noSuchUserError)
     return Promise.resolve()
   } catch (err) {
-    return Promise.reject({ code: err.code })
+    return handleError(err)
   }
 }
 
 export const remove = model => async id => {
   try {
-    await model.findByIdAndRemove(id).exec()
+    const user = await model.findByIdAndRemove(id)
+    if (!user) return Promise.reject(noSuchUserError)
     return Promise.resolve()
   } catch (err) {
-    return Promise.reject({ code: err.code })
+    return handleError(err)
   }
 }
 
