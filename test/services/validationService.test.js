@@ -18,7 +18,7 @@ describe('validationService', () => {
       const obj = { field: '' }
       const validator = { field: [notEmptyValidator] }
       const expectedResult = {
-        status: 400,
+        status: 406,
         message: 'validation error',
         details: {
           field: [notEmptyErrorMessage],
@@ -34,7 +34,7 @@ describe('validationService', () => {
       const obj = { field: '' }
       const validator = { field: [notEmptyValidator, minLengthValidator] }
       const expectedResult = {
-        status: 400,
+        status: 406,
         message: 'validation error',
         details: {
           field: [notEmptyErrorMessage, minLengthErrorMessage],
@@ -53,7 +53,7 @@ describe('validationService', () => {
         otherField: [minLengthValidator],
       }
       const expectedError = {
-        status: 400,
+        status: 406,
         message: 'validation error',
         details: {
           field: [minLengthErrorMessage],
@@ -73,7 +73,7 @@ describe('validationService', () => {
         otherField: [notEmptyValidator],
       }
       const expectedError = {
-        status: 400,
+        status: 406,
         message: 'validation error',
         details: { otherField: [notEmptyErrorMessage] },
       }

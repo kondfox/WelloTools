@@ -4,7 +4,6 @@ import { roles, errorMessages } from '../config/constants'
 export const authenticate = verifyToken => async (req, res, next) => {
   try {
     req.loggedInUser = await verifyToken(req.header('Authorization'))
-    logger.info('loggedInUser:', req.loggedInUser)
     next()
   } catch (err) {
     req.authError = err

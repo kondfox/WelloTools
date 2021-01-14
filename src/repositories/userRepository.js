@@ -104,6 +104,7 @@ export const userRepository = db => {
   const userModel = db.model('User', userSchema)
   return {
     schema,
+    userModel,
     save: save(userModel),
     findOne: findOne(userModel),
     search: search(userModel),

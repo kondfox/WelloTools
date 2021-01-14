@@ -3,9 +3,9 @@ POST http://localhost:3000/api/users
 content-type: application/json
 
 {
-  "email": "kondvik7@gmail.com",
+  "email": "email@domain.com",
   "password": "password",
-  "name": "Tamas Peter"
+  "name": "John Doe"
 }
 
 ### Register attempt with invalid data:
@@ -16,7 +16,7 @@ content-type: application/json
 
 ### List users:
 GET http://localhost:3000/api/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmUwYzBmNGNjMzk0ZDllMTJmMzM2NSIsImlhdCI6MTYxMDYyMTE3NSwiZXhwIjoxNjEwNjI0Nzc1fQ.2LoMwcotzhiPp2WdijAIlj59UjUueAsRhb_5Hf1os70
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwMDBhNTdiNmVhOWQ4MTRlOGZkYTM0ZSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTYxMDY1NTEwNiwiZXhwIjo0NzY0MjU1MTA2fQ.CZR9d4N_FYGVpjqj-v2kwjSFyn40i0PBNPiQJAdAux4
 
 ### Find users by given params:
 GET http://localhost:3000/api/users?name=Jane%20Doe

@@ -1,3 +1,10 @@
+export const mockLoggedInUser = (id, role) => {
+  return {
+    id,
+    role,
+  }
+}
+
 export const createMockEncoder = () => ({
   encode: jest.fn(plainText => Promise.resolve(`encoded${plainText}`)),
   compare: jest.fn(),
