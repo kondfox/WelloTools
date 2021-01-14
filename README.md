@@ -1,5 +1,9 @@
 # WelloTools
 
+## API documentation
+
+[Available on SwaggerHub](https://app.swaggerhub.com/apis-docs/kondfox/WelloTools/1.0.0)
+
 ## Environment variables
 
 You can find an example `.env` file under the name of `.env.example`.
