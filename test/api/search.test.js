@@ -1,12 +1,13 @@
 import request from 'supertest'
 
 import app from '../../src/app'
-import { dbProps } from '../../src/config/constants'
 import { appContext } from '../../src/diContainer'
+import { dbProps } from '../../src/config/constants'
 import * as testConstants from '../testConstants'
 import * as mockFactory from '../mockFactory'
 
 const userRepository = appContext.userRepository
+
 let mockFind
 
 beforeEach(() => {

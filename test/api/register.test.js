@@ -17,7 +17,7 @@ afterEach(() => {
 })
 
 describe('POST /api/users', () => {
-  it('should save return HTTP 201 when valid input is given', done => {
+  it('should return HTTP 201 when valid input is given', done => {
     request(app)
       .post('/api/users')
       .set('Content-Type', 'application/json')
@@ -37,7 +37,7 @@ describe('POST /api/users', () => {
       .expect('Content-Type', /json/)
       .end((err, res) => {
         expect(res.body.status).toBe('ok')
-        expect(res.body.userId).toBe(testConstants.exampleUserId)
+        expect(res.body.userId).not.toBeUndefined()
         done()
       })
   })

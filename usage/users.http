@@ -20,15 +20,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwMDBhNTdiN
 
 ### Find users by given params:
 GET http://localhost:3000/api/users?name=Jane%20Doe
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZmZjN2U5NzE2MGIzMDljNGJmNjg4ZDkiLCJpYXQiOjE2MTA0Njk1MjIsImV4cCI6MTYxMDQ3MzEyMn0.tdFe-ZE2-su4m5ecm4D3QZOj1DtqGGwcmkEqHxvqCOY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmUwYzBmNGNjMzk0ZDllMTJmMzM2NSIsImlhdCI6MTYxMDc0Mzk2MywiZXhwIjoxNjEwNzQ3NTYzfQ.l9NZDCL6itt9bEeD0vbZA3J8U1SEdHOOQLWytDAfFqc
 
 ### Find users by given params with pagination:
-GET http://localhost:3000/api/users?name=Tamas%20Peter&page=2
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZmZjN2U5NzE2MGIzMDljNGJmNjg4ZDkiLCJpYXQiOjE2MTA0Njk1MjIsImV4cCI6MTYxMDQ3MzEyMn0.tdFe-ZE2-su4m5ecm4D3QZOj1DtqGGwcmkEqHxvqCOY
+GET http://localhost:3000/api/users?name=John%Doe&page=2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmUwYzBmNGNjMzk0ZDllMTJmMzM2NSIsImlhdCI6MTYxMDc0Mzk2MywiZXhwIjoxNjEwNzQ3NTYzfQ.l9NZDCL6itt9bEeD0vbZA3J8U1SEdHOOQLWytDAfFqc
 
 ### Get user by id:
 GET http://localhost:3000/api/users/5ffe0c0f4cc394d9e12f3365
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmRkZDkxMzk4OWI1Y2ZiMjg2OTE2NCIsImlhdCI6MTYxMDQ3NDE2OSwiZXhwIjoxNjEwNDc3NzY5fQ.aJAQ1fL9TsSbTLZLWKBSbAEsiuUw4mN6vyIOL0OWbmQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmUwYzBmNGNjMzk0ZDllMTJmMzM2NSIsImlhdCI6MTYxMDc0Mzk2MywiZXhwIjoxNjEwNzQ3NTYzfQ.l9NZDCL6itt9bEeD0vbZA3J8U1SEdHOOQLWytDAfFqc
 
 ### Get user by non existing id:
 GET http://localhost:3000/api/users/4ffe0c0f4cc394d9e12f3365
