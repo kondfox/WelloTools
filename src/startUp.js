@@ -16,5 +16,7 @@ export const onStartup = async appContext => {
       name: 'Jane Doe',
       password: await appContext.encoder.encode('password'),
     })
-  } catch (err) {}
+  } catch (err) {
+    return
+  }
 }

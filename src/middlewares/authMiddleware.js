@@ -1,4 +1,3 @@
-import logger from '../logger'
 import { roles, errorMessages } from '../config/constants'
 
 export const authenticate = verifyToken => async (req, res, next) => {

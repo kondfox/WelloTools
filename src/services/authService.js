@@ -45,7 +45,6 @@ export const login = (
 ) => async credentials => {
   await validate(credentials, credentialValidator)
   const user = await userRepository.findOne({ email: credentials.email })
-
   const isValidPassword = await compare(credentials.password, user.password)
 
   if (!isValidPassword) {

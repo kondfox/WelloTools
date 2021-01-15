@@ -86,7 +86,7 @@ export const findById = (userRepository, filterValidFields) => async (
   reqId
 ) => {
   const user = await userRepository.findOne({ _id: reqId })
-
+  console.log('user email in service:', user.email)
   const allowedFields = fieldsToShow(userRepository.schema, loggedInUser)
 
   const userDTO = filterValidFields(user['_doc'], allowedFields)
