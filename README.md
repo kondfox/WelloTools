@@ -28,7 +28,7 @@ If you use multiple environments, create a `.env.<environment name>` file for ea
 - `npm install`: installs the dependencies
 - `npm start`: starts the app in dev mode
 - `npm test`: runs tests
-- `npm test:cover`: shows test coverage
+- `npm run test:cover`: shows test coverage
 - `npm run lint`: runs the linter
 - `npm run build`: builds the app
 
